@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Storage Scan</string>
+    <string name="label_start">Start</string>
+    <string name="label_stop">Stop</string>
+    <string name="external_storage_invalid_permissions">Invalid Permissions</string>
+    <string name="external_storage_scan_started">Storage Scan Started.</string>
+    <string name="external_storage_scan_stopped">Storage Scan Stopped.</string>
+    <string name="msg_external_storage_scan">Please press Start to begin Scanning.</string>
+    <string name="msg_external_storage_scan_interrupted">Storage Scan Interrupted.</string>
+    <string name="msg_external_storage_scan_duration">Scan Duration -</string>
+    <string name="err_msg_external_storage_read_fail">Failed to Read External Storage.</string>
+    <string name="label_names_and_sizes_10_biggest_files">Names and Sizes of 10 Biggest Files.</string>
+    <string name="label_average_file_size">Average File Size -</string>
+    <string name="label_most_frequent_file_types">5 Most frequent File Extensions.</string>
+    <string name="label_scan_result_share_failed">Scan Result Share Failed</string>
+    <string name="scan_result_share_email_subject">Check out Storage Scan</string>
+    <string name="scan_result_share_email_intent_chooser_title">Share Scan Results</string>
+    <string name="scan_result_Share_email_text">Sample Storage Scan Result attached</string>
+</resources>
