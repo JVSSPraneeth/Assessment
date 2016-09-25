@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +20,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.Menu;
@@ -55,7 +58,7 @@ public final class ExternalStorageScanActivity extends AppCompatActivity impleme
     // TAG.
     private final String TAG = getClass().getSimpleName();
     // Manifest Request Permission Code.
-    private final int REQUEST_READ_EXTERNAL_STORAGE = 0;
+    private final int REQUEST_READ_WRITE_EXTERNAL_STORAGE = 0;
     // Background Handler reference.
     private Handler mBackgroundHandler;
     // UI Elements.
@@ -113,12 +116,17 @@ public final class ExternalStorageScanActivity extends AppCompatActivity impleme
         mFileTypes.setLayoutManager(new GridLayoutManager(this, 1,
                 LinearLayoutManager.VERTICAL, false));
 
-        // Check and Request for READ_EXTERNAL_STORAGE Manifest permissions.
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
+        // Check and Request for READ_EXTERNAL_STORAGE and
+        // WRITE_EXTERNAL_STORAGE Manifest permissions.
+        if ((ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) &&
+                (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED)) {
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_READ_EXTERNAL_STORAGE);
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_READ_WRITE_EXTERNAL_STORAGE);
         }
     }
 
@@ -195,10 +203,11 @@ public final class ExternalStorageScanActivity extends AppCompatActivity impleme
      * @param grantResults
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == REQUEST_READ_EXTERNAL_STORAGE) {
+        if (requestCode == REQUEST_READ_WRITE_EXTERNAL_STORAGE) {
             for (int index = 0; index < permissions.length; index++) {
                 String permission = permissions[index];
                 int grantResult = grantResults[index];
@@ -211,6 +220,7 @@ public final class ExternalStorageScanActivity extends AppCompatActivity impleme
                         mStatusText.setText(getText(R.string.external_storage_invalid_permissions));
                         mProgressContainer.setVisibility(View.GONE);
                         mScanResultsContainer.setVisibility(View.GONE);
+                        break;
                     }
                 }
             }
